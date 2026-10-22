@@ -8,6 +8,7 @@ import secrets
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Annotated, Literal
+from dotenv import load_dotenv
 from uuid import uuid4
 
 from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, Query, UploadFile, status
@@ -19,8 +20,14 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, rela
 
 
 BASE_DIR = Path(__file__).resolve().parents[1]
+load_dotenv(
+    BASE_DIR / ".env",
+    override=True
+)
+
 DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR / 'data' / 'ativos.db'}")
 INVITE_CODE = os.getenv("INVITE_CODE")
+print("INVITE:", INVITE_CODE)
 SESSION_DURATION = timedelta(hours=12)
 MAX_PHOTOS = 5
 MAX_PHOTO_SIZE = 5 * 1024 * 1024
