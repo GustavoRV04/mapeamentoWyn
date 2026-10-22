@@ -45,7 +45,7 @@ backend\.venv\Scripts\Activate.ps1
 pip install -r backend\requirements.txt
 $env:INVITE_CODE = (python -c "import secrets; print(secrets.token_urlsafe(24))")
 Set-Location backend
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload  /OU/ python -m uvicorn app.main:app --reload
 ```
 
 A API ficará em `http://localhost:8000`; a documentação interativa fica em `/docs`. O código de convite deve ser compartilhado apenas com os integrantes da equipe. Se `INVITE_CODE` não estiver configurado, a API desativa novos cadastros.

@@ -58,7 +58,7 @@ export default function Historico({ mine = false }: { mine?: boolean }) {
         <section className="panel profile-summary">
           <div className="profile-identity">
             <div className="profile-avatar">{user?.name.slice(0, 1).toUpperCase()}</div>
-            <div><div className="eyebrow">PERFIL DO TÉCNICO</div><h2>{user?.name}</h2><p>{user?.email}</p></div>
+            <div><div className="eyebrow">PERFIL DO TÉCNICO</div><h2>{user?.name}</h2><p>{user?.matricula}</p></div>
           </div>
           <div className="profile-metrics">
             <div><strong>{total}</strong><span>Atendimentos</span></div>

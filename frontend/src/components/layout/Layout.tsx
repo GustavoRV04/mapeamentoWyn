@@ -30,7 +30,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           </div>
         </header>
         <main className="content">{children}</main>
-        <footer className="app-footer">Wyn Ativos <span>·</span> Controle operacional de ativos de rede</footer>
+        <footer className="app-footer">WynHub Ativos <span>·</span> Controle operacional de ativos de rede</footer>
       </div>
     </div>
   );

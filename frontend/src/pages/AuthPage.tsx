@@ -8,7 +8,7 @@ export default function AuthPage({ register = false }: { register?: boolean }) {
   const { user, loading, error, signIn, signUp, clearError } = useAuth();
   const navigate = useNavigate();
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [matricula, setMatricula] = useState("");
   const [password, setPassword] = useState("");
   const [inviteCode, setInviteCode] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -21,8 +21,8 @@ export default function AuthPage({ register = false }: { register?: boolean }) {
     clearError();
     setSubmitting(true);
     try {
-      if (register) await signUp(name, email, password, inviteCode);
-      else await signIn(email, password);
+      if (register) await signUp(name, matricula, password, inviteCode);
+      else await signIn(matricula, password);
       navigate("/", { replace: true });
     } catch {
       return;
@@ -35,18 +35,20 @@ export default function AuthPage({ register = false }: { register?: boolean }) {
     <main className="auth-screen">
       <section className="auth-card">
         <div className="brand-mark"><RadioTower size={21} /></div>
-        <div className="eyebrow">WYN · OPERAÇÕES DE REDE</div>
+        <div className="eyebrow">WynHub · OPERAÇÕES DE REDE</div>
         <h1>{register ? "Criar acesso" : "Bem-vindo de volta"}</h1>
         <p className="muted">{register ? "Entre com o convite da sua equipe para criar seu perfil." : "Acesse os registros e ativos da sua equipe."}</p>
         <form onSubmit={handleSubmit} className="auth-form">
           {register && (
-            <label>Nome completo
-              <input autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} required minLength={2} maxLength={120} />
+            <label>Nome Completo
+              <input autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} required minLength={11} maxLength={120} />
             </label>
           )}
-          <label>E-mail corporativo
-            <input type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
-          </label>
+          {register && (
+            <label>Matrícula
+              <input type="text" placeholder="p002314" value={matricula} onChange={(event) => setMatricula(event.target.value.toLowerCase())} required/> <span className="field-hint"> Ex.: p627651 ou c101690 </span>
+            </label>
+            )}
           {register && (
             <label>Código de convite
               <input value={inviteCode} onChange={(event) => setInviteCode(event.target.value)} required />

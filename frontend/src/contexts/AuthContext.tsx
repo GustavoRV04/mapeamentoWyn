@@ -28,9 +28,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setError("");
   }, []);
 
-  const signIn = useCallback(async (email: string, password: string) => {
+  const signIn = useCallback(async (matricula: string, password: string) => {
     try {
-      const { data } = await api.post<AuthResponse>("/auth/login", { email, password });
+      const { data } = await api.post<AuthResponse>("/auth/login", { matricula, password });
       saveSession(data);
     } catch (requestError) {
       const message = getErrorMessage(requestError);
@@ -39,11 +39,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [saveSession]);
 
-  const signUp = useCallback(async (name: string, email: string, password: string, inviteCode: string) => {
+  const signUp = useCallback(async (name: string, matricula: string, password: string, inviteCode: string) => {
     try {
       const { data } = await api.post<AuthResponse>("/auth/register", {
         name,
-        email,
+        matricula,
         password,
         invite_code: inviteCode,
       });

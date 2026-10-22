@@ -19,7 +19,7 @@ export default function Sidebar() {
     <aside className="sidebar">
       <Link to="/" className="brand">
         <span className="brand-icon"><RadioTower size={20} /></span>
-        <span><strong>Wyn Ativos</strong><small>OPERAÇÕES DE REDE</small></span>
+        <span><strong>WynHub Ativos</strong><small>OPERAÇÕES DE REDE</small></span>
       </Link>
       <div className="sidebar-section-label">ESPAÇO DE TRABALHO</div>
       <nav className="sidebar-nav">
@@ -33,7 +33,7 @@ export default function Sidebar() {
       <div className="sidebar-status"><span className="status-dot" /> Dados compartilhados com a equipe</div>
       <div className="sidebar-user">
         <div className="avatar">{user?.name.slice(0, 1).toUpperCase()}</div>
-        <div className="sidebar-user-info"><strong>{user?.name}</strong><span>{user?.email}</span></div>
+        <div className="sidebar-user-info"><strong>{user?.name}</strong><span>{user?.matricula}</span></div>
         <button className="icon-button logout-button" title="Sair da conta" onClick={() => void signOut()}><LogOut size={17} /></button>
       </div>
     </aside>

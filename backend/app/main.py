@@ -3,6 +3,7 @@ import hashlib
 import hmac
 import io
 import os
+import re
 import secrets
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -12,7 +13,7 @@ from uuid import uuid4
 from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, Query, UploadFile, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, ValidationInfo, field_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, field_validator
 from sqlalchemy import DateTime, ForeignKey, LargeBinary, String, Text, create_engine, func, or_, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, relationship, sessionmaker
 
@@ -47,7 +48,7 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
-    email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    matricula: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     password_hash: Mapped[str] = mapped_column(String(255))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
@@ -115,7 +116,7 @@ app.add_middleware(
 
 class UserInput(BaseModel):
     name: str = Field(min_length=2, max_length=120)
-    email: EmailStr
+    matricula: str
     password: str = Field(min_length=10, max_length=128)
     invite_code: str = Field(min_length=1, max_length=128)
 
@@ -126,17 +127,54 @@ class UserInput(BaseModel):
         if len(name) < 2:
             raise ValueError("Informe o nome completo.")
         return name
+    @field_validator("matricula")
+    @classmethod
+    def validate_matricula(
+        cls,
+        value: str
+    ) -> str:
+
+        matricula = value.strip().lower()
+
+        if not re.fullmatch(
+            r"[a-z]\d{6}",
+            matricula
+        ):
+            raise ValueError(
+                "Informe uma matrícula válida."
+            )
+
+        return matricula
 
 
 class LoginInput(BaseModel):
-    email: EmailStr
+    matricula: str
     password: str
+
+    @field_validator("matricula")
+    @classmethod
+    def validate_matricula(
+        cls,
+        value: str
+    ) -> str:
+
+        matricula = value.strip().lower()
+
+        if not re.fullmatch(
+            r"[a-z]\d{6}",
+            matricula
+        ):
+            raise ValueError(
+                "Informe uma matrícula válida."
+            )
+
+        return matricula
 
 
 class UserOutput(BaseModel):
     id: int
     name: str
-    email: EmailStr
+    matricula: str
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -311,10 +349,10 @@ def register(payload: UserInput, db: Session = Depends(get_db)):
         raise HTTPException(status_code=503, detail="O cadastro está desativado até a equipe configurar o código de convite.")
     if not hmac.compare_digest(payload.invite_code, INVITE_CODE):
         raise HTTPException(status_code=403, detail="Código de convite inválido.")
-    email = str(payload.email).lower()
-    if db.scalar(select(User).where(User.email == email)):
-        raise HTTPException(status_code=409, detail="Este e-mail já possui uma conta.")
-    user = User(name=payload.name.strip(), email=email, password_hash=hash_password(payload.password))
+    matricula = str(payload.matricula).strip().lower()
+    if db.scalar(select(User).where(User.matricula == matricula)):
+        raise HTTPException(status_code=409, detail="Esta Matricula já possui uma conta.")
+    user = User(name=payload.name.strip(), matricula=matricula, password_hash=hash_password(payload.password))
     db.add(user)
     db.commit()
     db.refresh(user)
@@ -323,9 +361,9 @@ def register(payload: UserInput, db: Session = Depends(get_db)):
 
 @app.post("/auth/login", response_model=AuthOutput)
 def login(payload: LoginInput, db: Session = Depends(get_db)):
-    user = db.scalar(select(User).where(User.email == str(payload.email).lower()))
+    user = db.scalar(select(User).where(User.matricula == str(payload.matricula).strip().lower()))
     if not user or not password_matches(payload.password, user.password_hash):
-        raise HTTPException(status_code=401, detail="E-mail ou senha incorretos.")
+        raise HTTPException(status_code=401, detail="Matricula ou senha incorretos.")
     return issue_session(db, user)
 
 
