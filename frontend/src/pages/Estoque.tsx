@@ -3,6 +3,8 @@ import { Boxes, CircleAlert, Download, Search } from "lucide-react";
 import { api } from "../services/api";
 import { getErrorMessage } from "../services/errors";
 import type { Asset, AssetPage } from "../types/modem";
+import { useModule } from "../contexts/ModuleContext";
+import { MODULES } from "../types/module";
 import { formatDateTime } from "../utils/records";
 
 const statusLabels: Record<Asset["status"], string> = {
@@ -23,6 +25,9 @@ export default function Estoque() {
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
   const [error, setError] = useState("");
+  const { selectedModule } = useModule();
+
+  const moduleConfig = MODULES[selectedModule as keyof typeof MODULES];
 
   useEffect(() => {
     let active = true;
@@ -61,7 +66,7 @@ export default function Estoque() {
   return (
     <>
       <div className="page-heading">
-        <div><div className="eyebrow">CONSULTA E CONTROLE</div><h1>Inventário de ativos</h1><p>Consulte a localização e a situação atual dos equipamentos registrados.</p></div>
+        <div><div className="eyebrow">CONSULTA E CONTROLE</div><h1>{moduleConfig.inventory.title}</h1><p>Consulte a localização e a situação atual dos equipamentos registrados.</p></div>
         <button className="button" type="button" onClick={() => void exportCsv()} disabled={!total || exporting}><Download size={15} />{exporting ? "Gerando..." : "Exportar CSV"}</button>
       </div>
       <section className="stats-grid inventory-stats">
