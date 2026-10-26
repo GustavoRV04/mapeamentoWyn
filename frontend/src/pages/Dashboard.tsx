@@ -6,6 +6,8 @@ import { api } from "../services/api";
 import { getErrorMessage } from "../services/errors";
 import type { AssetPage, NetworkRecord, NetworkRecordPage } from "../types/modem";
 import { formatDateTime } from "../utils/records";
+import { useModule } from "../contexts/ModuleContext";
+import { MODULES } from "../types/module";
 
 export default function Dashboard() {
   const [assetSummary, setAssetSummary] = useState<AssetPage | null>(null);
@@ -35,6 +37,8 @@ export default function Dashboard() {
   const attention = (assetSummary?.status_counts.DEFEITUOSO ?? 0) + (assetSummary?.status_counts.MANUTENCAO ?? 0);
   const units = (assetSummary?.unit_counts ?? []).slice(0, 5);
   const maxUnitCount = Math.max(...units.map(({ count }) => count), 1);
+  const { selectedModule } = useModule();
+  const moduleConfig = MODULES[selectedModule as keyof typeof MODULES];
 
   return (
     <>
@@ -51,10 +55,10 @@ export default function Dashboard() {
 
       {error && <div className="form-error page-alert"><CircleAlert size={16} />{error}</div>}
       <section className="stats-grid" aria-label="Resumo do inventário">
-        <StatCard label="Ativos mapeados" value={loading ? "—" : assetSummary?.total ?? 0} note="Equipamentos cadastrados" icon={<Boxes size={16} />} />
-        <StatCard label="Em operação" value={loading ? "—" : inUse} note="Alocados em unidades" icon={<Radio size={16} />} />
-        <StatCard label="Disponíveis em estoque" value={loading ? "—" : inStock} note="Prontos para instalação" icon={<Building2 size={16} />} />
-        <StatCard label="Manutenção / defeito" value={loading ? "—" : attention} note="Precisam de acompanhamento" icon={<Wrench size={16} />} />
+        <StatCard label={moduleConfig.dashboard.total} value={loading ? "—" : assetSummary?.total ?? 0} note="Equipamentos cadastrados" icon={<Boxes size={16} />} />
+        <StatCard label={moduleConfig.dashboard.active} value={loading ? "—" : inUse} note="Alocados em unidades" icon={<Radio size={16} />} />
+        <StatCard label={moduleConfig.dashboard.stock} value={loading ? "—" : inStock} note="Prontos para instalação" icon={<Building2 size={16} />} />
+        <StatCard label={moduleConfig.dashboard.attention} value={loading ? "—" : attention} note="Precisam de acompanhamento" icon={<Wrench size={16} />} />
       </section>
 
       <div className="dashboard-grid">

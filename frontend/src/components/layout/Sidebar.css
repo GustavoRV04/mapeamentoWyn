@@ -10,6 +10,46 @@
   border-right: 1px solid var(--line);
 }
 
+.module-selector {
+
+    margin-bottom: 20px;
+
+}
+
+.module-selector label {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 11px;
+
+    letter-spacing: .08em;
+
+    opacity: .75;
+
+    text-transform: uppercase;
+
+}
+
+.module-selector select {
+
+    width: 100%;
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    border: 1px solid #24344d;
+
+    background: #0f172a;
+
+    color: white;
+
+    outline: none;
+
+}
+
 .brand {
   display: flex;
   align-items: center;
