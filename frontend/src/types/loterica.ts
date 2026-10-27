@@ -1,12 +1,14 @@
 export interface Loterica {
 
-    codigo: string;
+    codigoUl: string;
+
+    req: string;
 
     nome: string;
 
-    portasOcupadas: number;
+    serieAr1220: string;
 
-    portasLivres: number;
+    portasOcupadas: number;
 
     status: string;
 

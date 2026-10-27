@@ -89,7 +89,23 @@ export default function Estoque() {
         {error && <div className="form-error table-message"><CircleAlert size={16} />{error}</div>}
         <div className="table-wrap">
           <table>
-            <thead><tr><th>Número de série</th><th>Modelo</th><th>MAC address</th><th>Unidade atual</th><th>Situação</th><th>Atualização</th></tr></thead>
+            <thead>
+
+            <tr>
+
+                {moduleConfig.inventory.columns.map(
+                    (column) => (
+
+                        <th key={column}>
+                            {column}
+                        </th>
+
+                    )
+                )}
+
+            </tr>
+
+            </thead>
             <tbody>
               {assets.map((asset) => (
                 <tr key={asset.serial}>

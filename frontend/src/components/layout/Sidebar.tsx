@@ -7,6 +7,7 @@ import {MODULES,type ModuleType} from "../../types/module";
 import "./Sidebar.css";
 
 const links = [
+  {to: "/importacao", label: "Importação"},
   { to: "/", label: "Visão geral", icon: LayoutDashboard, end: true },
   { to: "/registro", label: "Novo registro", icon: PlusCircle },
   { to: "/inventario", label: "Inventário", icon: Boxes },

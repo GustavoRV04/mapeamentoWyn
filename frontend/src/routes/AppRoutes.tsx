@@ -8,6 +8,7 @@ import Estoque from "../pages/Estoque";
 import Historico from "../pages/Historico";
 import Modems from "../pages/Modems";
 import Unidades from "../pages/Unidades";
+import Importacao from "../pages/Importacao";
 
 function RequireAuth() {
   const { user, loading } = useAuth();
@@ -22,6 +23,7 @@ function AppRouteTree() {
         <Route path="/login" element={<AuthPage />} />
         <Route path="/cadastro" element={<AuthPage register />} />
         <Route element={<RequireAuth />}>
+        <Route path="/importacao"element={<Importacao />}/>
           <Route path="/" element={<Dashboard />} />
           <Route path="/registro" element={<Modems />} />
           <Route path="/inventario" element={<Estoque />} />

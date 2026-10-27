@@ -11,6 +11,8 @@ from typing import Annotated, Literal
 from dotenv import load_dotenv
 from uuid import uuid4
 
+from app.importacao import router as import_router
+
 from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, Query, UploadFile, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
@@ -118,6 +120,9 @@ app.add_middleware(
     allow_credentials=False,
     allow_methods=["GET", "POST", "DELETE"],
     allow_headers=["Authorization", "Content-Type"],
+)
+app.include_router(
+    import_router
 )
 
 
