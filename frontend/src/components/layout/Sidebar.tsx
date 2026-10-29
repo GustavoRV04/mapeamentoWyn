@@ -1,4 +1,11 @@
-import { Activity, Boxes, Building2, ClipboardList, LayoutDashboard, LogOut, PlusCircle, RadioTower } from "lucide-react";
+import { 
+  Activity,
+  Boxes, 
+  Building2, 
+  ClipboardList, 
+  LayoutDashboard, 
+  LogOut, PlusCircle, 
+  RadioTower, Download } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
 import {useModule} from "../../contexts/ModuleContext";
@@ -7,13 +14,13 @@ import {MODULES,type ModuleType} from "../../types/module";
 import "./Sidebar.css";
 
 const links = [
-  {to: "/importacao", label: "Importação"},
   { to: "/", label: "Visão geral", icon: LayoutDashboard, end: true },
   { to: "/registro", label: "Novo registro", icon: PlusCircle },
   { to: "/inventario", label: "Inventário", icon: Boxes },
   { to: "/unidades", label: "Unidades", icon: Building2 },
   { to: "/feed", label: "Meu perfil e feed", icon: Activity },
   { to: "/historico", label: "Histórico geral", icon: ClipboardList },
+  { to: "/importacao", label: "Importação", icon: Download},
   
 ];
 
